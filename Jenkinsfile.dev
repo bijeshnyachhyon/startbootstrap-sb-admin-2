@@ -18,7 +18,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
-				sh 'docker run -d -p 80:80 bijesh-jenkins-build-website'
+				sh 'docker run -d -p 81:80 bijesh-jenkins-build-website'
             }
         }
     }
