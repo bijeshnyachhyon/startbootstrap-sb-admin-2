@@ -20,8 +20,7 @@ pipeline {
             steps {
 
                 echo 'Deploy on container'
-                sh 'docker stop $(docker ps -q)'
-				sh 'docker run -d -p 80:80 bijesh-jenkins-build-website-prod'
+		sh 'docker run -d -p 80:80 bijesh-jenkins-build-website-prod'
             }
         }
     }
