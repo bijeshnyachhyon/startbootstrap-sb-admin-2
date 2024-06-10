@@ -5,19 +5,28 @@ pipeline {
         stage('Code fetch') {
             steps {
                 echo 'Clone code from Github'
-                git url:'https://github.com/bijeshnyachhyon/startbootstrap-sb-admin-2.git', branch: 'master'
+                git url:'https://github.com/bijeshnyachhyon/startbootstrap-sb-admin-2.git', branch: 'main'
             }
         }
         
         stage('Build') {
             steps {
-                sh 'docker build -t bijesh-jenkins-build-website .'
+                sh 'docker build -t bijesh-jenkins-build-website-prod .'
             }
         }
         
+        stage('Image Scan') {
+            steps {
+                echo 'Docker Image scanning with Trivy'
+                sh 'trivy image bijesh-jenkins-build-website-prod'
+            }
+        }
+
         stage('Deploy') {
             steps {
+
                 echo 'Deploy on container'
+                sh 'docker stop $(docker ps -q)'
 				sh 'docker run -d -p 80:80 bijesh-jenkins-build-website-prod'
             }
         }
