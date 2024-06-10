@@ -6,6 +6,14 @@ environment {
     }
 
     stages {
+
+	stage('Repo Scan') {
+            steps {
+                echo 'Repo scan with Trivy'
+                sh 'trivy repo https://github.com/bijeshnyachhyon/startbootstrap-sb-admin-2.git'
+            }
+        }
+
         stage('Code fetch') {
             steps {
                 echo 'Clone code from Github'
@@ -18,20 +26,11 @@ environment {
                 sh 'docker build -t bijesh-jenkins-build-website-dev .'
             }
         }
-        
-        stage('Stop Previous Container') {
+
+	stage('Scan Docker image') {
             steps {
-                script {
-                    // Check if the container is running and stop it
-                    def containerId = sh(script: "docker ps -q -f name=${CONTAINER_NAME}", returnStdout: true).trim()
-                    if (containerId) {
-                        echo "Stopping container: ${CONTAINER_NAME}"
-                        sh "docker stop ${CONTAINER_NAME}"
-                        sh "docker rm ${CONTAINER_NAME}"
-                    } else {
-                        echo "No running container named ${CONTAINER_NAME} found"
-                    }
-                }
+                echo 'Scan Docker image'
+                sh 'trivy image bijesh-jenkins-build-website-dev'
             }
         }
 
