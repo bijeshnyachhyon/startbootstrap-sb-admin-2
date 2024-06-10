@@ -15,13 +15,6 @@ pipeline {
             }
         }
         
-        //stage('Image Scan') {
-        //    steps {
-        //        echo 'Docker Image scanning with Trivy'
-        //        sh 'trivy image bijesh-jenkins-build-website-dev'
-        //    }
-        //}
-
         stage('Deploy') {
             steps {
 
